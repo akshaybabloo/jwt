@@ -54,7 +54,7 @@ func (t *Token) Valid() (bool, error) {
 
 // UnmarshalAccessToken converts Token.AccessToken to string map
 func (t *Token) UnmarshalAccessToken() (map[string]interface{}, error) {
-	token, err := t.decodeToken(t.AccessToken)
+	token, err := t.DecodeToken(t.AccessToken)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func (t *Token) UnmarshalAccessToken() (map[string]interface{}, error) {
 
 // UnmarshalRefreshToken converts Token.RefreshToken to string map
 func (t *Token) UnmarshalRefreshToken() (map[string]interface{}, error) {
-	token, err := t.decodeToken(t.RefreshToken)
+	token, err := t.DecodeToken(t.RefreshToken)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +80,7 @@ func (t *Token) UnmarshalRefreshToken() (map[string]interface{}, error) {
 
 // UnmarshalIdToken converts Token.IdToken to string map
 func (t *Token) UnmarshalIdToken() (map[string]interface{}, error) {
-	token, err := t.decodeToken(t.IdToken)
+	token, err := t.DecodeToken(t.IdToken)
 	if err != nil {
 		return nil, err
 	}
@@ -91,7 +91,7 @@ func (t *Token) UnmarshalIdToken() (map[string]interface{}, error) {
 	return toInterface, nil
 }
 
-func (t *Token) decodeToken(token string) ([]byte, error) {
+func (t *Token) DecodeToken(token string) ([]byte, error) {
 	token = strings.Split(token, ".")[1]
 	decodeString, err := base64.StdEncoding.WithPadding(base64.NoPadding).DecodeString(token)
 	if err != nil {
