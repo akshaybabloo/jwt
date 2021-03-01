@@ -93,7 +93,7 @@ func (t *Token) UnmarshalIdToken() (map[string]interface{}, error) {
 
 func (t *Token) DecodeToken(token string) ([]byte, error) {
 	token = strings.Split(token, ".")[1]
-	decodeString, err := base64.StdEncoding.WithPadding(base64.NoPadding).DecodeString(token)
+	decodeString, err := base64.RawURLEncoding.DecodeString(token)
 	if err != nil {
 		return nil, err
 	}
