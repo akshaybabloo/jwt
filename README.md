@@ -1,6 +1,7 @@
 # JWT
 
-
+[![Go](https://github.com/akshaybabloo/jwt/actions/workflows/go.yml/badge.svg)](https://github.com/akshaybabloo/jwt/actions/workflows/go.yml)
+[![GoDoc](https://godoc.org/github.com/akshaybabloo/jwt?status.svg)](https://pkg.go.dev/github.com/akshaybabloo/jwt)
 
 A simple JWT decoder.
 
