@@ -3,9 +3,10 @@ package jwt
 import (
 	"encoding/base64"
 	"encoding/json"
-	"strconv"
 	"strings"
 	"time"
+
+	"github.com/akshaybabloo/jwt/providers"
 )
 
 // Token after an authentication is done
@@ -26,26 +27,21 @@ type Token struct {
 
 // Valid validates Token.AccessToken
 func (t *Token) Valid() (bool, error) {
+	var common providers.Common
 
-	token, err := t.UnmarshalAccessToken()
+	err := t.UnmarshalAccessToken(&common)
 	if err != nil {
 		return false, err
 	}
 
-	iat, err := UnixTimeToTime(token["iat"].(string))
-	if err != nil {
-		return false, err
-	}
-	exp, err := UnixTimeToTime(token["exp"].(string))
-	if err != nil {
-		return false, err
-	}
+	iat := UnixTimeToTime(common.Iat)
+	exp := UnixTimeToTime(common.Exp)
 
 	if !InTimeSpan(iat, exp, exp) {
 		return false, TokenExpiredError
 	}
 
-	if token["aud"] != t.ClientID {
+	if common.Aud != t.ClientID {
 		return false, ClientIDMismatchError
 	}
 
@@ -53,42 +49,42 @@ func (t *Token) Valid() (bool, error) {
 }
 
 // UnmarshalAccessToken converts Token.AccessToken to string map
-func (t *Token) UnmarshalAccessToken() (map[string]interface{}, error) {
+func (t *Token) UnmarshalAccessToken(v interface{}) error {
 	token, err := t.DecodeToken(t.AccessToken)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	toInterface, err := t.toInterface(token)
+	err = t.toInterface(token, &v)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return toInterface, nil
+	return nil
 }
 
 // UnmarshalRefreshToken converts Token.RefreshToken to string map
-func (t *Token) UnmarshalRefreshToken() (map[string]interface{}, error) {
+func (t *Token) UnmarshalRefreshToken(v interface{}) error {
 	token, err := t.DecodeToken(t.RefreshToken)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	toInterface, err := t.toInterface(token)
+	err = t.toInterface(token, &v)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return toInterface, nil
+	return nil
 }
 
 // UnmarshalIdToken converts Token.IdToken to string map
-func (t *Token) UnmarshalIdToken() (map[string]interface{}, error) {
+func (t *Token) UnmarshalIdToken(v interface{}) error {
 	token, err := t.DecodeToken(t.IdToken)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	toInterface, err := t.toInterface(token)
+	err = t.toInterface(token, &v)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return toInterface, nil
+	return nil
 }
 
 func (t *Token) DecodeToken(token string) ([]byte, error) {
@@ -100,22 +96,17 @@ func (t *Token) DecodeToken(token string) ([]byte, error) {
 	return decodeString, nil
 }
 
-func (t *Token) toInterface(token []byte) (map[string]interface{}, error) {
-	var data map[string]interface{}
-	err := json.Unmarshal(token, &data)
+func (t *Token) toInterface(token []byte, s interface{}) error {
+	err := json.Unmarshal(token, &s)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return data, nil
+	return nil
 }
 
 // UnixTimeToTime converts Unix time stamp to time.Time
-func UnixTimeToTime(s string) (time.Time, error) {
-	i, err := strconv.ParseInt(s, 10, 64)
-	if err != nil {
-		return time.Time{}, err
-	}
-	return time.Unix(i, 0), nil
+func UnixTimeToTime(s int64) time.Time {
+	return time.Unix(s, 0)
 }
 
 // InTimeSpan checks if two time stamps are in a given span
