@@ -57,8 +57,8 @@ func ExampleParseURL() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(data)
-	// Output: {1614586982 1614583382 1.0 https://gollahalliauth.b2clogin.com/4920656d-36e0-4b35-894d-0a0a14bec8b3/v2.0/ 7625f409-1fa7-4d78-93b0-5c340255cdf2 123456789 defaultNonce 1614583382 1614583382 some-oid Akshay Gollahalli B2C_1_SignUpSignInFlow    }
+	fmt.Printf("%#v\n", data)
+	// Output: providers.AzureB2C{Exp:1614586982, Nbf:1614583382, Ver:"1.0", Iss:"https://gollahalliauth.b2clogin.com/4920656d-36e0-4b35-894d-0a0a14bec8b3/v2.0/", Sub:"7625f409-1fa7-4d78-93b0-5c340255cdf2", Aud:"123456789", Nonce:"defaultNonce", Iat:1614583382, AuthTime:1614583382, Oid:"some-oid", GivenName:"Akshay", FamilyName:"Gollahalli", Tfp:"B2C_1_SignUpSignInFlow", CHash:"", AtHash:"", Scp:"", IdpAccessToken:"", Idp:""}
 }
 
 func ExampleParseAccessToken() {
@@ -70,6 +70,6 @@ func ExampleParseAccessToken() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(data)
-	// Output: {1614586982 1614583382 1.0 https://gollahalliauth.b2clogin.com/4920656d-36e0-4b35-894d-0a0a14bec8b3/v2.0/ 7625f409-1fa7-4d78-93b0-5c340255cdf2 123456789 defaultNonce 1614583382 1614583382 some-oid Akshay Gollahalli B2C_1_SignUpSignInFlow    }
+	fmt.Printf("%#v\n", data)
+	// Output: providers.AzureB2C{Exp:1614586982, Nbf:1614583382, Ver:"1.0", Iss:"https://gollahalliauth.b2clogin.com/4920656d-36e0-4b35-894d-0a0a14bec8b3/v2.0/", Sub:"7625f409-1fa7-4d78-93b0-5c340255cdf2", Aud:"123456789", Nonce:"defaultNonce", Iat:1614583382, AuthTime:1614583382, Oid:"some-oid", GivenName:"Akshay", FamilyName:"Gollahalli", Tfp:"B2C_1_SignUpSignInFlow", CHash:"", AtHash:"", Scp:"", IdpAccessToken:"", Idp:""}
 }
